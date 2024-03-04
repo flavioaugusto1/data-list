@@ -1,67 +1,83 @@
-import { ComponentProps } from 'react'
-import { twMerge } from 'tailwind-merge'
+import { ChevronDown } from 'lucide-react'
 
-interface TableProps extends ComponentProps<'table'> {}
+import nivoLogo from '../assets/logo-nivo.svg'
+import { Badge } from './ui/badge'
 
-export function Table(props: TableProps) {
+export function Header() {
   return (
-    <table
-      {...props}
-      className={twMerge(
-        'w-full text-sm border-t-2 border-b-2 border-zinc-800',
-        props.className,
-      )}
-    />
+    <div className="max-w-[1200px] mx-auto flex items-center justify-between">
+      <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
+          <img src={nivoLogo} alt="nivo.video" />
+
+          <Badge>BETA</Badge>
+        </div>
+
+        <svg
+          width="6"
+          height="16"
+          viewBox="0 0 6 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <line
+            x1="1.18372"
+            y1="15.598"
+            x2="5.32483"
+            y2="0.143194"
+            className="stroke-zinc-700"
+          />
+        </svg>
+
+        <div className="flex items-center gap-2.5">
+          <img
+            src="https://github.com/rocketseat.png"
+            className="size-5 rounded-full"
+            alt=""
+          />
+
+          <span className="text-sm font-medium text-zinc-100">Rocketseat</span>
+
+          <Badge variant="primary">PRO</Badge>
+
+          <ChevronDown className="text-zinc-600 size-4" />
+        </div>
+
+        <svg
+          width="6"
+          height="16"
+          viewBox="0 0 6 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <line
+            x1="1.18372"
+            y1="15.598"
+            x2="5.32483"
+            y2="0.143194"
+            className="stroke-zinc-700"
+          />
+        </svg>
+
+        <div className="flex items-center gap-2.5">
+          <span className="text-sm font-medium text-zinc-100">Ignite</span>
+
+          <ChevronDown className="text-zinc-600 size-4" />
+        </div>
+      </div>
+
+      <div className="flex items-center gap-3">
+        <div className="flex flex-col items-end gap-0.5">
+          <span className="text-sm font-medium">Diego Fernandes</span>
+          <span className="text-xs text-zinc-400">diego@nivo.video</span>
+        </div>
+        <img
+          src="https://github.com/flavioaugusto1.png"
+          className="size-8 rounded-full"
+          alt=""
+        />
+        <ChevronDown className="size-4 text-zinc-600" />
+      </div>
+    </div>
   )
-}
-
-interface TableHeaderProps extends ComponentProps<'thead'> {}
-
-export function TableHeader(props: TableHeaderProps) {
-  return <thead {...props} />
-}
-
-interface TableHeadProps extends ComponentProps<'th'> {}
-
-export function TableHead(props: TableHeadProps) {
-  return (
-    <th
-      {...props}
-      className={twMerge(
-        'text-left py-3 px-4 font-medium text-zinc-300',
-        props.className,
-      )}
-    />
-  )
-}
-
-interface TableBodyProps extends ComponentProps<'tbody'> {}
-
-export function TableBody(props: TableBodyProps) {
-  return (
-    <tbody
-      {...props}
-      className={twMerge(
-        '[&_tr:last-child]:border-0 [&_tr:hover]:bg-zinc-800/50',
-        props.className,
-      )}
-    />
-  )
-}
-
-interface TableRowProps extends ComponentProps<'tr'> {}
-
-export function TableRow(props: TableRowProps) {
-  return (
-    <tr
-      {...props}
-      className={twMerge('border-b border-zinc-800', props.className)}
-    />
-  )
-}
-
-interface TableCellProps extends ComponentProps<'td'> {}
-
-export function TableCell(props: TableCellProps) {
-  return <td {...props} className={twMerge('py-3 px-4', props.className)} />
 }

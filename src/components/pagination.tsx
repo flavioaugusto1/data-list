@@ -1,82 +1,100 @@
-import { ChevronDown } from 'lucide-react'
+import {
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+} from 'lucide-react'
 
-import nivoLogo from '../assets/logo-nivo.svg'
-import { Badge } from './ui/badge'
+import { useSearchParams } from 'react-router-dom'
+import { Button } from './ui/button'
+import { Select, SelectContent, SelectItem, SelectTrigger } from './ui/select'
 
-export function Header() {
+interface PaginationProps {
+  pages: number
+  items: number
+  page: number
+}
+
+export function Pagination({ items, page, pages }: PaginationProps) {
+  const [, setSearchParams] = useSearchParams()
+
+  function firstPage() {
+    setSearchParams(params => {
+      params.set('page', '1')
+
+      return params
+    })
+  }
+
+  function previousPage() {
+    if (page - 1 <= 0) {
+      return
+    }
+
+    setSearchParams(params => {
+      params.set('page', String(page - 1))
+
+      return params
+    })
+  }
+
+  function nextPage() {
+    if (page + 1 > pages) {
+      return
+    }
+
+    setSearchParams(params => {
+      params.set('page', String(page + 1))
+
+      return params
+    })
+  }
+
+  function lastPage() {
+    setSearchParams(params => {
+      params.set('page', String(pages))
+
+      return params
+    })
+  }
+
   return (
-    <div className="max-w-[1200px] mx-auto flex items-center justify-between">
-      <div className="flex items-center gap-3">
-        <div className="flex items-center gap-2.5">
-          <img src={nivoLogo} alt="nivo.video" />
+    <div className="flex text-sm items-center justify-between text-zinc-500">
+      <span>Showing 10 of {items} items</span>
+      <div className="flex items-center gap-8">
+        <div className="flex items-center gap-2">
+          <span>Rows per page</span>
 
-          <Badge>BETA</Badge>
+          <Select defaultValue="10">
+            <SelectTrigger aria-label="Page" />
+            <SelectContent>
+              <SelectItem value="10">10</SelectItem>
+              <SelectItem value="20">20</SelectItem>
+              <SelectItem value="50">50</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
-        <svg
-          width="6"
-          height="16"
-          viewBox="0 0 6 16"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <line
-            x1="1.18372"
-            y1="15.598"
-            x2="5.32483"
-            y2="0.143194"
-            className="stroke-zinc-700"
-          />
-        </svg>
+        <span>Page {page} of {pages}</span>
 
-        <div className="flex items-center gap-2.5">
-          <img
-            src="https://github.com/rocketseat.png"
-            className="size-5 rounded-full"
-            alt=""
-          />
-
-          <span className="text-sm font-medium text-zinc-100">Rocketseat</span>
-
-          <Badge variant="primary">PRO</Badge>
-
-          <ChevronDown className="text-zinc-600 size-4" />
+        <div className="space-x-1.5">
+          <Button onClick={firstPage} size="icon" disabled={page - 1 <= 0}>
+            <ChevronsLeft className="size-4" />
+            <span className="sr-only">First page</span>
+          </Button>
+          <Button onClick={previousPage} size="icon" disabled={page - 1 <= 0}>
+            <ChevronLeft className="size-4" />
+            <span className="sr-only">Previous page</span>
+          </Button>
+          <Button onClick={nextPage} size="icon" disabled={page + 1 > pages}>
+            <ChevronRight className="size-4" />
+            <span className="sr-only">Next page</span>
+          </Button>
+          <Button onClick={lastPage} size="icon" disabled={page + 1 > pages}>
+            <ChevronsRight className="size-4" />
+            <span className="sr-only">Last page</span>
+          </Button>
         </div>
-
-        <svg
-          width="6"
-          height="16"
-          viewBox="0 0 6 16"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <line
-            x1="1.18372"
-            y1="15.598"
-            x2="5.32483"
-            y2="0.143194"
-            className="stroke-zinc-700"
-          />
-        </svg>
-
-        <div className="flex items-center gap-2.5">
-          <span className="text-sm font-medium text-zinc-100">Ignite</span>
-
-          <ChevronDown className="text-zinc-600 size-4" />
-        </div>
-      </div>
-
-      <div className="flex items-center gap-3">
-        <div className="flex flex-col items-end gap-0.5">
-          <span className="text-sm font-medium">Diego Fernandes</span>
-          <span className="text-xs text-zinc-400">diego@nivo.video</span>
-        </div>
-        <img
-          src="https://github.com/diego3g.png"
-          className="size-8 rounded-full"
-          alt=""
-        />
-        <ChevronDown className="size-4 text-zinc-600" />
       </div>
     </div>
   )

@@ -1,31 +1,46 @@
-import { ComponentProps } from 'react'
+import { ComponentProps, createContext, ReactNode, useContext } from 'react'
 import { tv, type VariantProps } from 'tailwind-variants'
 
-const button = tv({
-  base: 'disabled:opacity-50 inline-flex items-center gap-1.5 text-xs font-medium',
+const input = tv({
+  slots: {
+    root: 'border border-zinc-700 bg-zinc-800/50',
+    control: 'placeholder-zinc-500 text-zinc-100',
+  },
 
   variants: {
     variant: {
-      default:
-        'py-1.5 px-2.5 rounded-md bg-zinc-900 border border-zinc-800 text-zinc-300 hover:border-zinc-700',
-      primary:
-        'py-1 px-2 rounded-full bg-teal-400 text-teal-950 hover:bg-teal-500',
-    },
-    size: {
-      default: '',
-      icon: 'p-1.5',
+      default: {},
+      filter: {
+        root: 'rounded-full py-1.5 px-3 flex items-center gap-1.5 text-xs text-zinc-500 leading-tight border-dashed focus-within:border-zinc-600',
+        control: 'bg-transparent flex-1 outline-none',
+      },
     },
   },
-
   defaultVariants: {
     variant: 'default',
   },
 })
 
-export interface ButtonProps
-  extends ComponentProps<'button'>,
-    VariantProps<typeof button> {}
+const inputContext = createContext({} as VariantProps<typeof input>)
 
-export function Button({ className, variant, size, ...props }: ButtonProps) {
-  return <button {...props} className={button({ variant, size, className })} />
+export function Input({
+  children,
+  variant,
+}: { children: ReactNode } & VariantProps<typeof input>) {
+  const { root } = input({ variant })
+
+  return (
+    <inputContext.Provider value={{ variant }}>
+      <div className={root()}>{children}</div>
+    </inputContext.Provider>
+  )
+}
+
+export interface ControlProps extends ComponentProps<'input'> {}
+
+export function Control({ className, ...props }: ControlProps) {
+  const { variant } = useContext(inputContext)
+  const { control } = input({ variant })
+
+  return <input className={control({ className })} {...props} />
 }
